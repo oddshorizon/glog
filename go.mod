@@ -1,4 +1,4 @@
-module github.com/juqiukai/glog
+module github.com/oddshorizon/glog
 
 go 1.18
 
