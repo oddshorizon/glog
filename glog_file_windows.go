@@ -1,3 +1,4 @@
+//go:build windows
 // +build windows
 
 package glog
@@ -8,6 +9,6 @@ import (
 )
 
 // 创建管道文件
-func createPipeFile() (*os.File, string, error) {
+func createPipeFile(pipeFilePath string) (*os.File, string, error) {
 	return nil, "", errors.New("windows not support")
 }

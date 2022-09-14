@@ -1,3 +1,4 @@
+//go:build !windows
 // +build !windows
 
 package glog
@@ -5,13 +6,11 @@ package glog
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"syscall"
 )
 
 // 创建管道文件
-func createPipeFile() (*os.File, string, error) {
-	pipeFilePath := filepath.Join(*logDir, "pipe.fifo")
+func createPipeFile(pipeFilePath string) (*os.File, string, error) {
 	os.Remove(pipeFilePath)
 	err := syscall.Mkfifo(pipeFilePath, 0666)
 	if err != nil {
