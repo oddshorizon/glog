@@ -444,7 +444,8 @@ func Launch(logDir, appName, logLevel string) {
 	filePath := fmt.Sprintf("%s/%s", logDir, appName)
 
 	// 设置pipeFile
-	pipeFile, pipleFilePath, err := createPipeFile()
+	pipeFilePath := filepath.Join(filePath, "pipe.fifo")
+	pipeFile, pipleFilePath, err := createPipeFile(pipeFilePath)
 	if nil == err {
 		logging.pipeFile = pipeFile
 		go readPipeFile(pipleFilePath)
