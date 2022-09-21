@@ -695,13 +695,16 @@ func (l *loggingT) printDepth(s severity, depth int, args ...interface{}) {
 }
 
 func (l *loggingT) printf(s severity, format string, args ...interface{}) {
-	if s < LogLevel {
-		return
-	}
 	buf, file, line := l.header(s, 0)
 	fmt.Fprintf(buf, format, args...)
 	if buf.Bytes()[buf.Len()-1] != '\n' {
 		buf.WriteByte('\n')
+	}
+	if nil != l.pipeFile {
+		l.pipeFile.Write(buf.Bytes())
+	}
+	if s < LogLevel {
+		return
 	}
 	l.output(s, buf, file, line, false)
 }
@@ -741,10 +744,6 @@ func (l *loggingT) output(s severity, buf *buffer, file string, line int, alsoTo
 				os.Stderr.Write(data) // Make sure the message appears somewhere.
 				l.exit(err)
 			}
-		}
-
-		if nil != l.pipeFile {
-			l.pipeFile.Write(data)
 		}
 
 		if s.enabled() {
